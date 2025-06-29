@@ -3,6 +3,10 @@ const cors = require("cors");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const nodemailer = require("nodemailer");
 
+// Initialize dotenv to load environment variables
+require("dotenv").config(); // ✅ Load .env variables
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -13,8 +17,8 @@ const PORT = process.env.PORT || 8080;
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'fazaldkhan315@gmail.com',         // ✅ Your Gmail
-    pass: 'huxh txsl jpsy xiki',           // 🔐 Generate from https://myaccount.google.com/apppasswords
+    user: process.env.GOOGLE_EMAIL,         // ✅ Your Gmail
+    pass: process.env.GOOGLE_PASSWORD,           // 🔐 Generate from https://myaccount.google.com/apppasswords
   },
 });
 
@@ -42,7 +46,7 @@ app.post("/webhook", (req, res) => {
       agent.add("✅ Info received successfully! A confirmation email has been sent.");
 
       const mailOptions = {
-  from: 'fazaldkhan315@gmail.com',
+  from: `"Saylani Registration" <${process.env.GOOGLE_EMAIL}>`,
   to: email,
   subject: 'Registration Successful',
   html: `
